@@ -1,6 +1,7 @@
 # cloud-init
 
 教程：https://mac-blog.org.ua/esxi-cloud-init-ubuntu
+
 支持文档：https://github.com/vmware-archive/cloud-init-vmware-guestinfo
 
 ## 下载cloudinit封装好的镜像
