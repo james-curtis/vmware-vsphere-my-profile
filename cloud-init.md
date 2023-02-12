@@ -25,7 +25,7 @@
 #cloud-config
 
 # hostname
-hostname: ub3
+hostname: ubuntutest
 # 将主机名写入hosts
 manage_etc_hosts: true
 
@@ -44,7 +44,7 @@ disable_root: false
 
 # reset password
 users:
-  - name: mac
+  - name: root
     lock_passwd: false
     plain_text_passwd: password
 
