@@ -49,16 +49,30 @@ users:
     plain_text_passwd: password
 
 # change repository
-runcmd:
-  - sudo cp /etc/apt/sources.list /etc/apt/sources.list.back
-  - sudo sed -i 's/archive.ubuntu.com/mirrors.nju.edu.cn/g' /etc/apt/sources.list
-  - sudo sed -i 's/security.ubuntu.com/mirrors.nju.edu.cn/g' /etc/apt/sources.list
+apt:
+  primary:
+    - arches:
+        - default
+      uri: 'http://mirror.nju.edu.cn/ubuntu'
+  security:
+    - arches:
+        - default
+      uri: 'http://mirror.nju.edu.cn/ubuntu'
 
+# open root password login
+runcmd:
+  - sudo sed -i.bak 's/#PermitRootLogin/PermitRootLogin yes#/' /etc/ssh/sshd_config
+  - sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+
+# apt update && apt upgrade, reboot if needed
+package_update: true
+package_upgrade: true
+package_reboot_if_required: true
 ```
 
 base64编码结果：
 ```
-I2Nsb3VkLWNvbmZpZwoKIyBob3N0bmFtZQpob3N0bmFtZTogdWJ1bnR1dGVzdAojIOWwhuS4u+acuuWQjeWGmeWFpWhvc3RzCm1hbmFnZV9ldGNfaG9zdHM6IHRydWUKCiMgbnRwCm50cDoKICBlbmFibGVkOiB0cnVlCiAgbnRwX2NsaWVudDogY2hyb255CiAgc2VydmVyczoKICAtIHRpbWUud2luZG93cy5jb20KCiMgdGltZXpvbmUKdGltZXpvbmU6IEFzaWEvU2hhbmdoYWkKCiMgcm9vdCBzc2ggbG9naW4KZGlzYWJsZV9yb290OiBmYWxzZQoKIyByZXNldCBwYXNzd29yZAp1c2VyczoKICAtIG5hbWU6IHJvb3QKICAgIGxvY2tfcGFzc3dkOiBmYWxzZQogICAgcGxhaW5fdGV4dF9wYXNzd2Q6IHBhc3N3b3JkCgojIGNoYW5nZSByZXBvc2l0b3J5CnJ1bmNtZDoKICAtIHN1ZG8gY3AgL2V0Yy9hcHQvc291cmNlcy5saXN0IC9ldGMvYXB0L3NvdXJjZXMubGlzdC5iYWNrCiAgLSBzdWRvIHNlZCAtaSAncy9hcmNoaXZlLnVidW50dS5jb20vbWlycm9ycy5uanUuZWR1LmNuL2cnIC9ldGMvYXB0L3NvdXJjZXMubGlzdAogIC0gc3VkbyBzZWQgLWkgJ3Mvc2VjdXJpdHkudWJ1bnR1LmNvbS9taXJyb3JzLm5qdS5lZHUuY24vZycgL2V0Yy9hcHQvc291cmNlcy5saXN0Cg==
+I2Nsb3VkLWNvbmZpZwoKIyBob3N0bmFtZQpob3N0bmFtZTogdWJ1bnR1dGVzdAojIOWwhuS4u+acuuWQjeWGmeWFpWhvc3RzCm1hbmFnZV9ldGNfaG9zdHM6IHRydWUKCiMgbnRwCm50cDoKICBlbmFibGVkOiB0cnVlCiAgbnRwX2NsaWVudDogY2hyb255CiAgc2VydmVyczoKICAtIHRpbWUud2luZG93cy5jb20KCiMgdGltZXpvbmUKdGltZXpvbmU6IEFzaWEvU2hhbmdoYWkKCiMgcm9vdCBzc2ggbG9naW4KZGlzYWJsZV9yb290OiBmYWxzZQoKIyByZXNldCBwYXNzd29yZAp1c2VyczoKICAtIG5hbWU6IHJvb3QKICAgIGxvY2tfcGFzc3dkOiBmYWxzZQogICAgcGxhaW5fdGV4dF9wYXNzd2Q6IHBhc3N3b3JkCgojIGNoYW5nZSByZXBvc2l0b3J5CmFwdDoKICBwcmltYXJ5OgogICAgLSBhcmNoZXM6CiAgICAgICAgLSBkZWZhdWx0CiAgICAgIHVyaTogJ2h0dHA6Ly9taXJyb3Iubmp1LmVkdS5jbi91YnVudHUnCiAgc2VjdXJpdHk6CiAgICAtIGFyY2hlczoKICAgICAgICAtIGRlZmF1bHQKICAgICAgdXJpOiAnaHR0cDovL21pcnJvci5uanUuZWR1LmNuL3VidW50dScKCiMgb3BlbiByb290IHBhc3N3b3JkIGxvZ2luCnJ1bmNtZDoKICAtIHN1ZG8gc2VkIC1pLmJhayAncy8jUGVybWl0Um9vdExvZ2luL1Blcm1pdFJvb3RMb2dpbiB5ZXMjLycgL2V0Yy9zc2gvc3NoZF9jb25maWcKICAtIHN1ZG8gc2VkIC1pICdzL1Bhc3N3b3JkQXV0aGVudGljYXRpb24gbm8vUGFzc3dvcmRBdXRoZW50aWNhdGlvbiB5ZXMvJyAvZXRjL3NzaC9zc2hkX2NvbmZpZwoKIyBhcHQgdXBkYXRlICYmIGFwdCB1cGdyYWRlLCByZWJvb3QgaWYgbmVlZGVkCnBhY2thZ2VfdXBkYXRlOiB0cnVlCnBhY2thZ2VfdXBncmFkZTogdHJ1ZQpwYWNrYWdlX3JlYm9vdF9pZl9yZXF1aXJlZDogdHJ1ZQ==
 ```
 
 ## 编写metadata
