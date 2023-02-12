@@ -17,7 +17,8 @@
 文档：https://canonical-cloud-init.readthedocs-hosted.com/en/latest/reference/modules.html
 
 > 注意
-> 第一行必须是 `#cloud-config` 
+> - 第一行必须是 `#cloud-config` 
+> - 文件大小有500kb限制，太大了需要gzip压缩
 
 
 ```yaml
