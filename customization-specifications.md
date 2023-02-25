@@ -2,6 +2,8 @@
 
 自定义脚本
 
+> 对于校园网，需要在模板虚拟机上传登录脚本到 `/home/ubuntu/main.py`
+
 ```
 #!/bin/sh
 
@@ -23,6 +25,16 @@ function network()
     else
         #网络不畅通
         return 0
+    fi
+
+    return 0
+}
+
+function campus()
+{
+    if [ "`curl -s qq.com | grep 1.1.1.1`"x != ""x ]; then
+        # 需要校园网验证
+        return 1
     fi
 
     return 0
@@ -51,11 +63,24 @@ timedatectl set-timezone Asia/Shanghai
 
 network
 if [ $? -eq 0 ];then
-	echo "网络不畅通，请检查网络设置！"
+	echo "network off"
 	exit -1
 fi
+echo "network ok"
 
-echo "网络畅通，你可以上网冲浪！"
+# 判断校园网
+campus
+if [ $? -eq 1 ];then
+    # 开始校园网验证
+    if [ "`python3 /home/ubuntu/main.py`" != "success"x ];then
+        if [ "`python3 /home/ubuntu/main.py`" != "success"x ];then
+            if [ "`python3 /home/ubuntu/main.py`" != "success"x ];then
+                echo "login fail"
+            fi
+        fi
+    fi
+    echo "login ok"
+fi
 
 # 更新
 apt update -y
