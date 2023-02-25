@@ -52,6 +52,10 @@ user=root
 
 }
 
+function addCron(){
+    echo "*/5 * * * *    root    sh /home/ubuntu/login.sh  >> /var/log/login.log 2>&1" >> /etc/crontab
+}
+
 if [ x$1 == x"precustomization" ]; then
 echo Do Precustomization tasks >> /tmp/precustomization
 
@@ -103,9 +107,10 @@ sed -i.bak "s/pool [a-zA-Z0-9\.]*\s*iburst maxsources [0-9]*/server time.windows
 systemctl restart chronyd
 
 # 定时登录校园网
-apt install supervisor -y
-addSupervisorConf
-systemctl restart supervisor
+addCron
+sed -i.bak "s#\#cron.*#cron.*     /var/log/cron.log#" /etc/rsyslog.d/50-default.conf
+service rsyslog restart
+service cron restart
 
 fi
 ```
