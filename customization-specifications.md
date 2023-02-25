@@ -34,12 +34,22 @@ function network()
 
 function campus()
 {
-    if [ "`curl -s qq.com | grep 1.1.1.1`"x != ""x ]; then
+    if [ "`curl -s test.ipw.cn | grep 1.1.1.1`"x != ""x ]; then
         # 需要校园网验证
         return 1
     fi
 
     return 0
+}
+
+function addSupervisorConf(){
+    echo "
+[program:campus]
+command=sh /home/ubuntu/login.sh
+autorestart=false
+user=root
+" > /etc/supervisor/conf.d/campus.conf
+
 }
 
 if [ x$1 == x"precustomization" ]; then
@@ -93,6 +103,10 @@ apt install chrony -y
 # 修改时间服务器
 sed -i.bak "s/pool [a-zA-Z0-9\.]*\s*iburst maxsources [0-9]*/server time.windows.com iburst/g" /etc/chrony/chrony.conf
 
-fi
+# 定时登录校园网
+apt install supervisor -y
+addSupervisorConf
+systemctl restart supervisor
 
+fi
 ```
