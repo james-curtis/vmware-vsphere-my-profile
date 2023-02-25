@@ -99,10 +99,8 @@ apt update -y
 
 # 时间
 apt install chrony -y
-systemctl restart chronyd
-
-# 修改时间服务器
 sed -i.bak "s/pool [a-zA-Z0-9\.]*\s*iburst maxsources [0-9]*/server time.windows.com iburst/g" /etc/chrony/chrony.conf
+systemctl restart chronyd
 
 # 定时登录校园网
 apt install supervisor -y
@@ -110,5 +108,4 @@ addSupervisorConf
 systemctl restart supervisor
 
 fi
-
 ```
