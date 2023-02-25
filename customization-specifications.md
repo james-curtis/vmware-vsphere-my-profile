@@ -2,7 +2,9 @@
 
 自定义脚本
 
-> 对于校园网，需要在模板虚拟机上传登录脚本到 `/home/ubuntu/main.py`
+已经在Ubuntu 22.04 LTS版本测试通过
+
+> 对于校园网，需要在模板虚拟机上传登录脚本到 `/home/ubuntu/main.py` 和 `/home/ubuntu/login.sh`
 
 ```
 #!/bin/sh
