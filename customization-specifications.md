@@ -4,6 +4,15 @@
 
 已经在Ubuntu 22.04 LTS版本测试通过
 
+> 先决条件
+> 1. 确保Ubuntu默认shell已修改为bash，而不是默认的dash
+> 
+> https://blog.csdn.net/Aoutlaw/article/details/127406626
+> 
+> 2. 确保vmware tools开启了自定义脚本
+> 
+> https://docs.vmware.com/cn/VMware-vSphere/8.0/vsphere-vm-administration/GUID-EB5F090E-723C-4470-B640-50B35D1EC016.html
+
 ```
 #!/bin/sh
 
