@@ -12,6 +12,8 @@
 > 2. 确保vmware tools开启了自定义脚本
 > 
 > https://docs.vmware.com/cn/VMware-vSphere/8.0/vsphere-vm-administration/GUID-EB5F090E-723C-4470-B640-50B35D1EC016.html
+> 
+> 3. 确保使用传统分区，不要使用lvm卷
 
 ```
 #!/bin/sh
@@ -51,6 +53,10 @@ net.ipv6.conf.all.disable_ipv6=1
 net.ipv6.conf.default.disable_ipv6=1
 net.ipv6.conf.lo.disable_ipv6 = 1" >> /etc/sysctl.conf
 sysctl -p
+
+# 自动拓展根分区
+growpart /dev/sda 2
+resize2fs /dev/sda2
 
 fi
 ```
